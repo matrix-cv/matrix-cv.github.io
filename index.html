@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Computer Vision & AI Portfolio (PL)</title>
-    <link rel="stylesheet" href="https://jsdelivr.net">
+    <title>Matrix Computer Vision (PL)</title>
     <style>
         :root {
             --bg-color: #0f172a; --card-bg: #1e293b; --accent-color: #38bdf8;
@@ -31,21 +30,29 @@
         .offer-card i { font-size: 2.5rem; color: var(--accent-color); display: block; margin-bottom: 1rem; }
         .offer-card h3 { margin-bottom: 0.5rem; }
         .offer-card p { color: var(--text-muted); font-size: 0.95rem; }
+        
+        /* POPRAWKA: Nowa struktura siatki dla obrazów z efektem hover */
         .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; }
-        .project-card { background-color: var(--card-bg); border-radius: 12px; overflow: hidden; border: 1px solid #334155; }
-        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; }
-        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+        .project-card { background-color: var(--card-bg); border-radius: 12px; overflow: hidden; border: 1px solid #334155; transition: transform 0.3s ease; }
+        .project-card:hover { transform: translateY(-5px); }
+        
+        /* Kontener obrazu z efektem zoomu */
+        .image-container { width: 100%; height: 200px; overflow: hidden; position: relative; background-color: #0b111e; }
+        .image-container img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .project-card:hover .image-container img { transform: scale(1.05); }
+        
         .project-info { padding: 1.5rem; }
         .project-info h3 { margin-bottom: 0.5rem; }
         .project-info p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem; }
-        .tags span { background-color: #0f172a; color: var(--accent-color); padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.8rem; margin-right: 0.4rem; }
+        .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+        .tags span { background-color: #0f172a; color: var(--accent-color); padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.8rem; }
         .contact-container { background-color: var(--card-bg); padding: 3rem; border-radius: 12px; border: 1px solid #334155; text-align: center; max-width: 600px; margin: 0 auto; }
         .contact-btn { display: inline-flex; align-items: center; gap: 0.5rem; background-color: var(--accent-color); color: #0f172a; padding: 0.75rem 2rem; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 1.5rem; transition: opacity 0.2s; cursor: pointer; border: none; font-size: 1rem; }
         .contact-btn:hover { opacity: 0.9; }
         .back-to-top { display: block; text-align: right; margin-top: 2rem; }
         .back-to-top a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; }
         .back-to-top a:hover { color: var(--accent-color); }
-        footer { text-align: center; padding: 3rem 2rem; color: var(--text-muted); font-size: 0.9rem; background-color: #0b111e; }
+        footer { text-align: center; padding: 3rem 2rem; color: var(--text-muted); font-size: 0.9rem; background-color: #0b111e; border-top: 1px solid #1e293b; }
         @media (max-width: 768px) { nav { padding: 1rem; } .nav-links { gap: 0.8rem; } .nav-links a { font-size: 0.85rem; } header h1 { font-size: 2.2rem; } }
     </style>
 </head>
@@ -56,7 +63,7 @@
             <a href="#" class="logo">Matrix<span>CV</span></a>
             <ul class="nav-links">
                 <li><a href="#realizacje">Realizacje</a></li>
-<li><a href="#oferta">Oferta</a></li>
+                <li><a href="#oferta">Oferta</a></li>
                 <li><a href="#kontakt">Kontakt</a></li>
                 <li><a href="en.html" class="lang-switch">EN</a></li>
             </ul>
@@ -64,81 +71,14 @@
     </nav>
 
     <header id="home">
-        <h1>Inżynier <span>Computer Vision</span></h1>
-        <p>Projektuję i wdrażam dedykowane systemy analizy obrazu i wideo oparte na sieciach neuronowych.</p>
+        <h1>Inżynier <span>obrazu cyfrowego</span></h1>
+        <p>Projektuję i wdrażam dopasowane systemy wizyjne.</p>
+        <p>Emisja strony <span>18/09/2026</span></p>
     </header>
 
-    <section id="oferta">
-        <h2>Co mogę zaoferować</h2>
-        <div class="offer-grid">
-            <div class="offer-card">
-                <i class="bi bi-eye"></i>
-                <h3>Detekcja i Klasyfikacja</h3>
-                <p>Wykrywanie obiektów w czasie rzeczywistym na taśmach produkcyjnych, liczenie elementów, kategoryzacja pojazdów.</p>
-            </div>
-            <div class="offer-card">
-                <i class="bi bi-cpu"></i>
-                <h3>Optymalizacja Modelów</h3>
-                <p>Dostosowywanie sztucznej inteligencji do pracy na urządzeniach o ograniczonej mocy, np. Raspberry Pi czy NVIDIA Jetson.</p>
-            </div>
-            <div class="offer-card">
-                <i class="bi bi-gear-wide-connected"></i>
-                <h3>Integracja z Systemami</h3>
-                <p>Łączenie modułów wizyjnych z istniejącym oprogramowaniem fabrycznym i kamerami przemysłowymi.</p>
-            </div>
-        </div>
-        <div class="back-to-top"><a href="#home"><i class="bi bi-arrow-up-short"></i> Do góry</a></div>
-    </section>
-
-    <section id="realizacje">
-        <h2>Wybrane realizacje wideo</h2>
-        <div class="projects-grid">
-            <div class="project-card">
-                <div class="video-container">
-                    <iframe src="https://youtube.com" allowfullscreen></iframe>
-                </div>
-                <div class="project-info">
-                    <h3>Kontrola jakości na produkcji</h3>
-                    <p>Automatyczna weryfikacja poprawności montażu przy użyciu autorskiego modelu sieci konwolucyjnej.</p>
-                    <div class="tags"><span>YOLOv8</span><span>OpenCV</span></div>
-                </div>
-            </div>
-            <div class="project-card">
-                <div class="video-container">
-                    <iframe src="https://youtube.com" allowfullscreen></iframe>
-                </div>
-                <div class="project-info">
-                    <h3>Śledzenie obiektów w ruchu</h3>
-                    <p>Analiza potoków pieszych w przestrzeni publicznej na potrzeby systemów Smart City.</p>
-                    <div class="tags"><span>DeepSORT</span><span>Python</span></div>
-                </div>
-            </div>
-        </div>
-        <div class="back-to-top"><a href="#home"><i class="bi bi-arrow-up-short"></i> Do góry</a></div>
-    </section>
-
-    <section id="kontakt">
-        <h2>Kontakt</h2>
-        <div class="contact-container">
-            <p>Masz pytania dotyczące wdrożenia Computer Vision w Twoim projekcie? Napisz bezpośrednio do mnie.</p>
-            <button class="contact-btn" onclick="obfuscatedEmail()">
-                <i class="bi bi-envelope"></i> Wyślij e-mail
-            </button>
-        </div>
-        <div class="back-to-top"><a href="#home"><i class="bi bi-arrow-up-short"></i> Do góry</a></div>
-    </section>
-
     <footer>
-        <p>&copy; 2026 Twoje Imię i Nazwisko | Specjalista Computer Vision</p>
-        <p style="font-size: 0.8rem; margin-top: 0.5rem; color: #475569;">Strona hostowana bezpłatnie na GitHub Pages</p>
+        <p>&copy; 2026 Łukasz Pater | Specjalista analizy i przetwarzania obrazu</p>
     </footer>
-
-    <script>
-        function obfuscatedEmail() {
-            var user = "twoj.adres";  // WPISZ CO PRZED MAŁPĄ @
-            var domain = "domena.pl"; // WPISZ CO PO MAŁPIE @
-            window.location.href = "mailto:" + user + "@" + domain + "?subject=Zapytanie ze strony CV";
-        }
-    </script>
+    
 </body>
 </html>
