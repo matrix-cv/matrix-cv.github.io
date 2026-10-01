@@ -120,7 +120,7 @@
                     <h3>Analiza przeprowadzonego uczenia</h3>
                     <p class="project-desc">Monitorowanie, analiza i porównywanie krzywych uczenia tj. strata i dokładność na zbiorach treningowych oraz walidacyjnych. Model detekcji obiektów o geometrii kołowej (otwory montażowe oraz pady testowe na płytkach PCB).</p>
                     <div class="project-effect">
-                        <strong>Efekt:</strong>Optymalizacja hiperparametrów oraz eliminacja overfittingu, co przełożyło się na precyzję detekcji obiektów w systemie produkcyjnym.
+                        <strong>Efekt:</strong> Optymalizacja hiperparametrów oraz eliminacja overfittingu, co przełożyło się na precyzję detekcji obiektów w systemie produkcyjnym.
                     </div>
                     <div class="project-tech">
                         <span class="tech-label">Technologia:</span>
@@ -276,3 +276,39 @@
     </script>
 </body>
 </html>
+
+# Autoadnotacja
+![[autoadnotacja.jpeg]]
+przez ułożenie referencji; ułożenie padów, otworów i narożników
+
+**Nazwa projektu:** autoadnotacja 
+**Opis:** płytki elektroniczne pcb, mają już swoje projekty cad. przy znanej lokalizacja wystarczy wskazać tylko kilka z nich, a pozostałe powstaną z nałożenia warstw CAD
+**Efekty:** uproszczenie anotacji przez nałożenie znanego rozlokowania pozostałych elementów projektu CAD
+**Technologia:** Python, OpenCV
+# MLFlow
+![[MLFlow.jpeg]]
+dobre dopasowanie; uczenia
+
+**Nazwa projektu:** Analiza przeprowadzonego uczenia
+**Opis:** Monitorowanie, analiza i porównywanie krzywych uczenia tj. strata i dokładność na zbiorach treningowych oraz walidacyjnych. Model detekcji obiektów o geometrii kołowej (otwory montażowe oraz pady testowe na płytkach PCB).
+**Efekty:** Optymalizacja hiperparametrów oraz eliminacja overfittingu, co przełożyło się na precyzję detekcji obiektów w systemie produkcyjnym.
+**Technologia:** MLflow, Python, Deep Learning, Object Detection, R-CNN
+# Uczenie nienadzorowane
+![[uczenie_nienadzorowane 1.jpeg]]
+algorytm analizy odległości od centroidów;   
+na przykładzie powierzchni lakierniczej
+
+**Nazwa projektu:** System nienadzorowanej kontroli jakości powłok lakierniczych PCB (UV)
+**Opis:**  Opracowanie algorytmu pozycjonowania i porównywania obrazu ze wzorcem do detekcji przezroczystego lakieru ochronnego na płytkach drukowanych w świetle UV. Wykorzystanie uczenia nienadzorowanego (analiza odległości od centroidów) do weryfikacji pokrycia w trzech strefach: koniecznej, zakazanej i obojętnej.
+**Efekty:** Automatyczne wskazywanie różnic w pokryciu lakierem oraz klasyfikacja produkcji na powierzchnie akceptowalne lub odrzucone.
+**Technologia:** Machine Learning (ML), Python, K-means, Scikit-learn
+
+# CVAT
+![[cvat.jpeg]]
+duży i uporządkowany zbiór gwarantem sukcesu; z precyzją
+Wdrożenie systemu oznakowania obrazów  oraz 
+
+**Nazwa projektu:** Narzędzie etykietowania zestawu obrazów
+**Opis:** Wdrożenie i utrzymanie lokalnej platformy (_on-premise_) do anotacji danych. Służy do strukturyzacji zbiorów pod kątem uczenia maszynowego lub sztucznej inteligencji. Podział na projekty i klasy w adnotacjach typu _bounding boxes_.
+**Efekt:** Scentralizowano proces przygotowania danych wizyjnych. Narzędzie umożliwiło jednoczesną pracę analityków obrazu (_annotators_) oraz stało się  współdzielonym repozytorium danych zespołów R&D uczących modele CV.
+**Technologia:** CVAT
