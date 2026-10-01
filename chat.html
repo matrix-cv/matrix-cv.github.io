@@ -39,11 +39,21 @@
         .image-container { width: 100%; aspect-ratio: 16 / 9; overflow: hidden; position: relative; background-color: #0b111e; cursor: zoom-in; }
         .image-container img { width: 100%; height: 100%; object-fit: contain; }
         
-        .project-info { padding: 1.5rem; }
-        .project-info h3 { margin-bottom: 0.5rem; }
+        /* .project-info { padding: 1.5rem; } */
+        /* .project-info h3 { margin-bottom: 0.5rem; } */
+        .project-info {padding: 1.5rem;display: flex;flex-direction: column;gap: 0.8rem;}
+        .project-info h3 {margin-bottom: 0.2rem;font-size: 1.25rem;color: var(--text-main);}/* Styl dla OPISU */
+        .project-desc {color: var(--text-muted);font-size: 0.95rem;line-height: 1.5;margin-bottom: 0 !important;}
+
+        .project-effect {font-size: 0.9rem;color: #e2e8f0;background: rgba(56, 189, 248, 0.05);border-left: 2px solid var(--accent-color);padding: 0.5rem 0.75rem;border-radius: 0 6px 6px 0;}
+        .project-effect strong {color: var(--accent-color);}/* Styl dla TECHNOLOGII */
+        .project-tech {margin-top: 0.4rem;}
+        .tech-label {display: block;font-size: 0.8rem;color: var(--text-muted);text-transform: uppercase;letter-spacing: 0.05em;margin-bottom: 0.4rem;}
+
         .project-info p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem; }
         .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-        .tags span { background-color: #0f172a; color: var(--accent-color); padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.8rem; }
+        /* .tags span { background-color: #0f172a; color: var(--accent-color); padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.8rem; } */
+        .tags span {background-color: #0f172a;color: var(--accent-color);border: 1px solid rgba(56, 189, 248, 0.2); padding: 0.25rem 0.6rem;border-radius: 4px;font-size: 0.8rem;font-weight: 500;}
         .contact-container { background-color: var(--card-bg); padding: 3rem; border-radius: 12px; border: 1px solid #334155; text-align: center; max-width: 600px; margin: 0 auto; }
         .contact-btn { display: inline-flex; align-items: center; gap: 0.5rem; background-color: var(--accent-color); color: #0f172a; padding: 0.75rem 2rem; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 1.5rem; transition: opacity 0.2s; cursor: pointer; border: none; font-size: 1rem; }
         .contact-btn:hover { opacity: 0.9; }
@@ -99,6 +109,29 @@
                     <h3>Kontrola jakości na produkcji</h3>
                     <p>Automatyczna weryfikacja poprawności montażu przy użyciu autorskiego modelu sieci konwolucyjnej.</p>
                     <div class="tags"><span>YOLOv8</span><span>OpenCV</span></div>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="image-container">
+                    <img src="images/projekty/MLFlow.jpeg" alt="Kontrola jakości na produkcji" loading="lazy">
+                </div>
+                <div class="project-info">
+                    <h3>Analiza przeprowadzonego uczenia</h3>
+                    <p class="project-desc">Monitorowanie, analiza i porównywanie krzywych uczenia tj. strata i dokładność na zbiorach treningowych oraz walidacyjnych. Model detekcji obiektów o geometrii kołowej (otwory montażowe oraz pady testowe na płytkach PCB).</p>
+                    <div class="project-effect">
+                        <strong>Efekt:</strong>Optymalizacja hiperparametrów oraz eliminacja overfittingu, co przełożyło się na precyzję detekcji obiektów w systemie produkcyjnym.
+                    </div>
+                    <div class="project-tech">
+                        <span class="tech-label">Technologia:</span>
+                        <div class="tags">
+                            <span>MLflow</span>
+                            <span>Python</span>
+                            <span>Deep Learning</span>
+                            <span>Object Detection</span>
+                            <span>R-CNN</span>
+                        </div>
+                    </div>
                 </div>
             </div>
             
