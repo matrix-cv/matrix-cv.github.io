@@ -94,7 +94,7 @@
         <p>Projektuję i wdrażam dedykowane systemy analizy obrazu i wideo oparte na sieciach neuronowych.</p>
     </header>
 
-    <!-- ZMIANA NAGŁÓWKA: Dostosowano pod prezentację obrazów projektowych -->
+    <!-- REALIZACJE -->
     <section id="realizacje">
         <h2>Wybrane realizacje i projekty</h2>
         <div class="projects-grid">
@@ -102,19 +102,7 @@
             <!-- PROJEKT 1 -->
             <div class="project-card">
                 <div class="image-container">
-                    <!-- POPRAWKA: Przywrócono loading="lazy" -->
-                    <img src="images/punkt_optymalny.jpeg" alt="Kontrola jakości na produkcji" loading="lazy">
-                </div>
-                <div class="project-info">
-                    <h3>Kontrola jakości na produkcji</h3>
-                    <p>Automatyczna weryfikacja poprawności montażu przy użyciu autorskiego modelu sieci konwolucyjnej.</p>
-                    <div class="tags"><span>YOLOv8</span><span>OpenCV</span></div>
-                </div>
-            </div>
-
-            <div class="project-card">
-                <div class="image-container">
-                    <img src="images/projekty/MLFlow.jpeg" alt="Kontrola jakości na produkcji" loading="lazy">
+                    <img src="images/projekty/MLFlow.jpeg" alt="Analiza przeprowadzonego uczenia" loading="lazy">
                 </div>
                 <div class="project-info">
                     <h3>Analiza przeprowadzonego uczenia</h3>
@@ -134,22 +122,29 @@
                     </div>
                 </div>
             </div>
-            
-            <!-- PROJEKT 2 -->
+
+           <!-- PROJEKT 2 -->
             <div class="project-card">
                 <div class="image-container">
-                    <!-- POPRAWKA: Przywrócono loading="lazy" -->
-                    <img src="sciezka/do/obrazka-smartcity.jpg" alt="Śledzenie obiektów w ruchu" loading="lazy">
+                    <img src="images/projekty/uczenie_nienadzorowane.jpeg" alt="System nienadzorowanej kontroli jakości powłok lakierniczych PCB (UV)" loading="lazy">
                 </div>
                 <div class="project-info">
-                    <h3>Śledzenie obiektów w ruchu</h3>
-                    <p>Analiza potoków pieszych w przestrzeni publicznej na potrzeby systemów Smart City.</p>
-                    <div class="tags"><span>DeepSORT</span><span>Python</span></div>
+                    <h3>System nienadzorowanej kontroli jakości powłok lakierniczych PCB (UV)</h3>
+                    <p class="project-desc">Opracowanie algorytmu pozycjonowania i porównywania obrazu ze wzorcem do detekcji przezroczystego lakieru ochronnego na płytkach drukowanych w świetle UV. Wykorzystanie uczenia nienadzorowanego (analiza odległości od centroidów) do weryfikacji pokrycia w trzech strefach: koniecznej, zakazanej i obojętnej.</p>
+                    <div class="project-effect">
+                        <strong>Efekt:</strong>Automatyczne wskazywanie różnic w pokryciu lakierem oraz natychmiastowa klasyfikacja produkcji na komponenty akceptowalne i odrzucone.
+                    </div>
+                    <div class="project-tech">
+                        <span class="tech-label">Technologia:</span>
+                        <div class="tags">
+                            <span>Python</span>
+                            <span>Scikit-learn</span>
+                            <span>K-means</span>
+                            <span>OpenCV (Image Alignment)</span>
+                        </div>
+                    </div>
                 </div>
             </div>
-
-            <!-- Tutaj możesz doklejać kolejne kafelki (PROJEKT 3, 4, 5...) w ten sam sposób, pamiętając o loading="lazy" -->
-
         </div>
         <div class="back-to-top"><a href="#home"><i class="bi bi-arrow-up-short"></i> Do góry</a></div>
     </section>
