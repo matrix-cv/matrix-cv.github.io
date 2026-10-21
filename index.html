@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Matrix Computer Vision (PL)</title>
+    <link rel="stylesheet" href="css/bootstrap-icons.css">
     <style>
         :root {
             --bg-color: #0f172a; --card-bg: #1e293b; --accent-color: #38bdf8;
@@ -31,21 +32,28 @@
         .offer-card h3 { margin-bottom: 0.5rem; }
         .offer-card p { color: var(--text-muted); font-size: 0.95rem; }
         
-        /* POPRAWKA: Nowa struktura siatki dla obrazów z efektem hover */
         .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; }
-        .project-card { background-color: var(--card-bg); border-radius: 12px; overflow: hidden; border: 1px solid #334155; transition: transform 0.3s ease; }
-        .project-card:hover { transform: translateY(-5px); }
+        .project-card { background-color: var(--card-bg); border-radius: 12px; overflow: hidden; border: 1px solid #334155; }
         
-        /* Kontener obrazu z efektem zoomu */
-        .image-container { width: 100%; height: 200px; overflow: hidden; position: relative; background-color: #0b111e; }
-        .image-container img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
-        .project-card:hover .image-container img { transform: scale(1.05); }
+        /* POPRAWKA: Rezerwacja proporcji 16:9 zapobiega skakaniu strony przed pobraniem grafik */
+        .image-container { width: 100%; aspect-ratio: 16 / 9; overflow: hidden; position: relative; background-color: #0b111e; cursor: zoom-in; }
+        .image-container img { width: 100%; height: 100%; object-fit: contain; }
         
-        .project-info { padding: 1.5rem; }
-        .project-info h3 { margin-bottom: 0.5rem; }
+        /* .project-info { padding: 1.5rem; } */
+        /* .project-info h3 { margin-bottom: 0.5rem; } */
+        .project-info {padding: 1.5rem;display: flex;flex-direction: column;gap: 0.8rem;}
+        .project-info h3 {margin-bottom: 0.2rem;font-size: 1.25rem;color: var(--text-main);}/* Styl dla OPISU */
+        .project-desc {color: var(--text-muted);font-size: 0.95rem;line-height: 1.5;margin-bottom: 0 !important;}
+
+        .project-effect {font-size: 0.9rem;color: #e2e8f0;background: rgba(56, 189, 248, 0.05);border-left: 2px solid var(--accent-color);padding: 0.5rem 0.75rem;border-radius: 0 6px 6px 0;}
+        .project-effect strong {color: var(--accent-color);}/* Styl dla TECHNOLOGII */
+        .project-tech {margin-top: 0.4rem;}
+        .tech-label {display: block;font-size: 0.8rem;color: var(--text-muted);text-transform: uppercase;letter-spacing: 0.05em;margin-bottom: 0.4rem;}
+
         .project-info p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem; }
         .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-        .tags span { background-color: #0f172a; color: var(--accent-color); padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.8rem; }
+        /* .tags span { background-color: #0f172a; color: var(--accent-color); padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.8rem; } */
+        .tags span {background-color: #0f172a;color: var(--accent-color);border: 1px solid rgba(56, 189, 248, 0.2); padding: 0.25rem 0.6rem;border-radius: 4px;font-size: 0.8rem;font-weight: 500;}
         .contact-container { background-color: var(--card-bg); padding: 3rem; border-radius: 12px; border: 1px solid #334155; text-align: center; max-width: 600px; margin: 0 auto; }
         .contact-btn { display: inline-flex; align-items: center; gap: 0.5rem; background-color: var(--accent-color); color: #0f172a; padding: 0.75rem 2rem; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 1.5rem; transition: opacity 0.2s; cursor: pointer; border: none; font-size: 1rem; }
         .contact-btn:hover { opacity: 0.9; }
@@ -53,6 +61,17 @@
         .back-to-top a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; }
         .back-to-top a:hover { color: var(--accent-color); }
         footer { text-align: center; padding: 3rem 2rem; color: var(--text-muted); font-size: 0.9rem; background-color: #0b111e; border-top: 1px solid #1e293b; }
+        
+        /* MODAL PODGLĄDU */
+        .lightbox-modal {
+            display: none; position: fixed; z-index: 2000; top: 0; left: 0;
+            width: 100%; height: 100%; background-color: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px); align-items: center; justify-content: center;
+        }
+        .lightbox-modal.active { display: flex; }
+        .lightbox-content { max-width: 90%; max-height: 85vh; border-radius: 8px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); }
+        .lightbox-close { position: absolute; top: 20px; right: 30px; color: #fff; font-size: 2.5rem; font-weight: bold; cursor: pointer; }
+        .lightbox-close:hover { color: var(--accent-color); }
         @media (max-width: 768px) { nav { padding: 1rem; } .nav-links { gap: 0.8rem; } .nav-links a { font-size: 0.85rem; } header h1 { font-size: 2.2rem; } }
     </style>
 </head>
@@ -65,20 +84,461 @@
                 <li><a href="#realizacje">Realizacje</a></li>
                 <li><a href="#oferta">Oferta</a></li>
                 <li><a href="#kontakt">Kontakt</a></li>
-                <li><a href="en.html" class="lang-switch">EN</a></li>
+               <!-- <li><a href="en.html" class="lang-switch">EN</a></li>-->
             </ul>
         </div>
     </nav>
 
     <header id="home">
-        <h1>Inżynier <span>obrazu cyfrowego</span></h1>
-        <p>Projektuję i wdrażam dopasowane systemy wizyjne.</p>
-        <p>Emisja strony: 02/10/2026</p>
+        <h1>Inżynier <span>Computer Vision</span></h1>
+        <p>Projektuję oraz wdrażam dedykowane systemy analizy i przetwarzania obrazu.</p>
     </header>
 
+    <!-- REALIZACJE -->
+    <section id="realizacje">
+        <h2>Wybrane realizacje i projekty</h2>
+        <div class="projects-grid">
+            
+            <!-- PROJEKT MLFlow -->
+            <div class="project-card">
+                <div class="image-container">
+                    <img src="images/projekty/MLFlow.jpeg" alt="Analiza przeprowadzonego uczenia" loading="lazy">
+                </div>
+                <div class="project-info">
+                    <h3>Analiza przeprowadzonego uczenia</h3>
+                    <p class="project-desc">Monitorowanie, analiza i porównywanie krzywych uczenia tj. strata i dokładność na zbiorach treningowych oraz walidacyjnych. Model detekcji obiektów o geometrii kołowej (otwory montażowe oraz pady testowe na płytkach PCB).</p>
+                    <div class="project-effect">
+                        <strong>Efekt:</strong> optymalizacja hiperparametrów oraz eliminacja overfittingu, co przełożyło się na precyzję detekcji obiektów w systemie produkcyjnym.
+                    </div>
+                    <div class="project-tech">
+                        <span class="tech-label">Technologia:</span>
+                        <div class="tags">
+                            <span>MLflow</span>
+                            <span>Python</span>
+                            <span>Deep Learning</span>
+                            <span>Object Detection</span>
+                            <span>R-CNN</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROJEKT uczenie nienadzorowane -->
+            <div class="project-card">
+                <div class="image-container">
+                    <img src="images/projekty/uczenie_nienadzorowane.jpeg" alt="System nienadzorowanej kontroli jakości powłok lakierniczych PCB (UV)" loading="lazy">
+                </div>
+                <div class="project-info">
+                    <h3>System nienadzorowanej kontroli jakości powłok lakierniczych PCB (UV)</h3>
+                    <p class="project-desc">Opracowanie algorytmu pozycjonowania i porównywania obrazu ze wzorcem do detekcji przezroczystego lakieru ochronnego na płytkach drukowanych w świetle UV. Wykorzystanie uczenia nienadzorowanego (analiza odległości od centroidów) do weryfikacji pokrycia w trzech strefach: koniecznej, zakazanej i obojętnej.</p>
+                    <div class="project-effect">
+                        <strong>Efekt:</strong> automatyczne wskazywanie różnic w pokryciu lakierem oraz natychmiastowa klasyfikacja produkcji na komponenty akceptowalne lub odrzucone.
+                    </div>
+                    <div class="project-tech">
+                        <span class="tech-label">Technologia:</span>
+                        <div class="tags">
+                            <span>Machine Learning (ML)</span>
+                            <span>K-means</span>
+                            <span>Scikit-learn</span>
+                            <span>OpenCV (Image Alignment)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROJEKT CVAT -->
+            <div class="project-card">
+                <div class="image-container">
+                    <img src="images/projekty/cvat.jpeg" alt="Narzędzie etykietowania zestawu obrazów" loading="lazy">
+                </div>
+                <div class="project-info">
+                    <h3>Narzędzie etykietowania zestawu obrazów</h3>
+                    <p class="project-desc">Wdrożenie i utrzymanie lokalnej platformy (_on-premise_) do anotacji danych. Służy do strukturyzacji zbiorów pod kątem uczenia maszynowego lub sztucznej inteligencji. Podział na projekty i klasy w adnotacjach typu _bounding boxes_.</p>
+                    <div class="project-effect">
+                        <strong>Efekt:</strong> scentralizowano proces przygotowania danych wizyjnych. Narzędzie umożliwiło jednoczesną pracę analityków obrazu (annotators) oraz stało się współdzielonym repozytorium danych zespołów R&D uczących modele CV.
+                    </div>
+                    <div class="project-tech">
+                        <span class="tech-label">Technologia:</span>
+                        <div class="tags">
+                            <span>CVAT</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROJEKT autoadnotacja -->
+            <div class="project-card">
+                <div class="image-container">
+                    <img src="images/projekty/autoadnotacja.jpeg" alt="Automatyczna adnotacja danych na podstawie projektów CAD (PCB)" loading="lazy">
+                </div>
+                <div class="project-info">
+                    <h3>Automatyczna adnotacja danych na podstawie projektów CAD (PCB)</h3>
+                    <p class="project-desc">Opracowanie algorytmu autoadnotacji zdjęć płytek drukowanych (PCB) przy użyciu geometrii modeli CAD. System dopasowuje warstwy projektowe CAD do obrazu z kamery na zaledwie kilku wskazanych przez użytkownika punktów bazowych (narożniki, wybrane pady lub otwory). Następnie automatycznie generuje etykiety (bounding boxes oraz point references) dla pozostałych kilkudziesięciu elementów płytki.</p>
+                    <div class="project-effect">
+                        <strong>Efekt:</strong> skrócenie czasu przygotowania danych treningowych. Zastąpiono ręczne etykietowanie powtarzalnych obiektów, automatycznym generowaniem adnotacji na podstawie pierwotnej struktury projektu.
+                    </div>
+                    <div class="project-tech">
+                        <span class="tech-label">Technologia:</span>
+                        <div class="tags">
+                            <span>Python</span>
+                            <span>OpenCV (Affine Transforms / Homography)</span>
+                            <span>CAD Data Integration</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROJEKT dopasowanie obrazu 2D do obiektu 3D -->
+            <div class="project-card">
+                <div class="image-container">
+                    <img src="images/projekty/dopasowanie.jpeg" alt="Estymacja pozy obiektów 3D z obrazu 2D (Bin Picking PoC)" loading="lazy">
+                </div>
+                <div class="project-info">
+                    <h3>Estymacja pozy obiektów 3D z obrazu 2D (Bin Picking PoC)</h3>
+                    <p class="project-desc">Opracowanie prototypu (Proof of Concept) systemu dopasowania trójwymiarowego modelu CAD do płaskiego zdjęcia 2D, na podstawie klasycznego podejścia Davida G. Lowe'a. Projekt obejmował analizę matematyczną rzutowania perspektywicznego, implementację obliczeń macierzy przekształceń geometrycznych oraz wyznaczanie pozycji obiektu w przestrzeni (6DoF).</p>
+                    <div class="project-effect">
+                        <strong>Efekt:</strong> przeprowadzono walidację matematyczną założeń artykułu naukowego i stworzono skrypt obliczeniowy weryfikujący wyznaczanie współczynników rzutowania. Zidentyfikowano ograniczenia podejścia pod kątem stabilności algorytmu, tworząc bazę wiedzy pod systemy zrobotyzowanego pobierania detekcji (Bin Picking).
+                    </div>
+                    <div class="project-tech">
+                        <span class="tech-label">Technologia:</span>
+                        <div class="tags">
+                            <span>Python</span>
+                            <span>NumPy</span>
+                            <span>SciPy (algebra liniowa, optymalizacja)</span>
+                            <span>Matematyka wizji komputerowej (Geometry & Transform Matrices)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROJEKT ekspozycja -->
+            <div class="project-card">
+                <div class="image-container">
+                    <img src="images/projekty/ekspozycja.jpeg" alt="Automatyczna ekspozycja przez analizę histogramu" loading="lazy">
+                </div>
+                <div class="project-info">
+                    <h3>Automatyczna ekspozycja przez analizę histogramu</h3>
+                    <p class="project-desc">Opracowanie systemu dynamicznej regulacji ekspozycji kamery, opartego na analizie rozkładu jasności pikseli w kanałach RGB oraz skali szarości. Algorytm na bieżąco monitoruje histogram obrazu pod kątem prześwietleń (clipping w jasnych partiach) oraz niedoświetleń, automatycznie dostosowując parametry akwizycji do panujących warunków oświetleniowych.</p>
+                    <div class="project-effect">
+                        <strong>Efekt:</strong> stabilizacja jakości rejestrowanego obrazu, eliminacja efektu prześwietlenia/niedoświetlenia sceny oraz zapewnienie optymalnego kontrastu danych wejściowych na etapie obróbki wstępnej (preprocessing).
+                    </div>
+                    <div class="project-tech">
+                        <span class="tech-label">Technologia:</span>
+                        <div class="tags">
+                            <span>C++</span>
+                            <span>OpenCV<span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROJEKT Halcon -->
+            <div class="project-card">
+                <div class="image-container">
+                    <img src="images/projekty/halcon.jpeg" alt="Dopasowania wzorca w środowisku MVTec Halcon" loading="lazy">
+                </div>
+                <div class="project-info">
+                    <h3>Dopasowania wzorca w środowisku MVTec Halcon</h3>
+                    <p class="project-desc">Research, opracowanie oraz implementacja algorytmu dopasowania wzorca graficznego (Shape-Based / Template Matching) do obiektów o złożonej geometrii (obudowy komponentów) przy użyciu oprogramowania MVTec Halcon. System wykrywa pozycję detalu w przestrzeni roboczej, realizując lokalizację krawędzi, otworów oraz linii referencyjnych w czasie rzeczywistym.</p>
+                    <div class="project-effect">
+                        <strong>Efekt:</strong> osiągnięcie niskiego czasu detekcji obiektu na poziomie 0.3 s, umożliwiając pozycjonowanie komponentów oraz ekstrakcję cech geometrycznych.
+                    </div>
+                    <div class="project-tech">
+                        <span class="tech-label">Technologia:</span>
+                        <div class="tags">
+                            <span>MVTec Halcon</span>
+                            <span>HDevelop</span>                                
+                            <span>Metrologia 2D (Shape-Based Matching)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROJEKT HDR -->
+            <div class="project-card">
+                <div class="image-container">
+                    <img src="images/projekty/hdr.jpeg" alt="Dynamiczna ekspozycja HDR w inspekcji wizyjnej PCB" loading="lazy">
+                </div>
+                <div class="project-info">
+                    <h3>Dynamiczna ekspozycja HDR w inspekcji wizyjnej PCB</h3>
+                    <p class="project-desc">Implementacja algorytmu HDR (High Dynamic Range) do akwizycji obrazów płytek elektronicznych o wysokim poziomie kontrastu. System łączy serię zdjęć wykonanych z różnymi czasami naświetlania, aby jednocześnie odwzorować ciemne elementy matowe (np. struktura laminatu, obudowy układów scalonych) oraz jasne, refleksyjne powierzchnie metaliczne (np. luty, pady, miedziane ścieżki, jasne tło).</p>
+                    <div class="project-effect">
+                        <strong>Efekt:</strong> zwiększenie rozpiętości tonalnej obrazu wejściowego, eliminacja refleksów świetlnych (glare) oraz niedoświetlonych stref.
+                    </div>
+                    <div class="project-tech">
+                        <span class="tech-label">Technologia:</span>
+                        <div class="tags">
+                            <span>C++</span>
+                            <span>OpenCV (Computational Photography / Image Exposure Fusion)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROJEKT klasy -->
+            <div class="project-card">
+                <div class="image-container">
+                    <img src="images/projekty/klasy.jpeg" alt="Detekcja i wieloklasowa klasyfikacja obiektów (Faster R-CNN)" loading="lazy">
+                </div>
+                <div class="project-info">
+                    <h3>Detekcja i wieloklasowa klasyfikacja obiektów (Faster R-CNN)</h3>
+                    <p class="project-desc">Przygotowanie dedykowanego zbioru danych, nadzór nad procesem anotacji oraz wytrenowanie detektora obiektów opartego na architekturze Faster R-CNN. Projekt obejmował klasyfikację wielu małych i nachodzących na siebie elementów montażowych (m.in. śruby, podkładki, otwory i piny referencyjne) na zróżnicowanych tłach.</p>
+                    <div class="project-effect">
+                        <strong>Efekt:</strong> wytrenowanie stabilnego modelu zdolnego do precyzyjnej lokalizacji obiektów o małych gabarytach, z jednoczesnym rozróżnianiem bliskich geometrycznie i przestrzennie klas komponentów.
+
+                    </div>
+                    <div class="project-tech">
+                        <span class="tech-label">Technologia:</span>
+                        <div class="tags">
+                            <span>Python</span>
+                            <span>Faster R-CNN</span>
+                            <span>PyTorch / TensorFlow</span>
+                            <span>Object Detection</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROJEKT krawędzie -->
+            <div class="project-card">
+                <div class="image-container">
+                    <img src="images/projekty/krawędzie.jpeg" alt="Analiza porównawcza metod detekcji krawędzi w inspekcji wizyjnej PCB" loading="lazy">
+                </div>
+                <div class="project-info">
+                    <h3>Analiza porównawcza metod detekcji krawędzi w inspekcji wizyjnej PCB</h3>
+                    <p class="project-desc">Przeprowadzenie analizy i benchmarku klasycznych metod filtracji przestrzennej oraz detekcji krawędzi na obrazach płytek drukowanych (PCB). Projekt obejmował implementację oraz testy porównawcze operatorów różniczkowych i gradientowych (Canny, Sobel, Prewitt, Roberts, Kirsch, Laplacian of Gaussian - LoG, Lindeberg).</p>
+                    <div class="project-effect">
+                        <strong>Efekt:</strong> wyznaczenie optymalnego kompromisu, pomiędzy odpornością na szum, a precyzją lokalizacji ścieżek i punktów lutowniczych, co pozwoliło dobrać najlepszy algorytm ekstrakcji cech (feature extraction).
+                    </div>
+                    <div class="project-tech">
+                        <span class="tech-label">Technologia:</span>
+                        <div class="tags">
+                            <span>Python</span>
+                            <span>OpenCV</span>
+                            <span>NumPy</span>
+                            <span>Scikit-image</span>
+                            <span>Klasyczne Przetwarzanie Obrazów (Spatial Filtering)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- PROJEKT natężenie światła -->
+            <div class="project-card">
+                <div class="image-container">
+                    <img src="images/projekty/natężenie_światła.jpeg" alt="Badanie wpływu dynamicznych zmian oświetlenia na stabilność algorytmów CV" loading="lazy">
+                </div>
+                <div class="project-info">
+                    <h3>Badanie wpływu dynamicznych zmian oświetlenia na stabilność algorytmów CV</h3>
+                    <p class="project-desc">opis</p>
+                    <div class="project-effect">
+                        <strong>Efekt:</strong> wyznaczenie granicznych wartości natężenia światła, przy których algorytmy zachowują stabilność, oraz opracowanie wytycznych dla systemów doświetlenia stanowisk inspekcyjnych, w celu eliminacji błędów detekcji
+                    </div>
+                    <div class="project-tech">
+                        <span class="tech-label">Technologia:</span>
+                        <div class="tags">
+                            <span>Matplotlib</span>
+                            <span>Sensoryka (Luxometry)</span>
+                            <span>Klasyczne przetwarzanie obrazu</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROJEKT ostrość -->
+            <div class="project-card">
+                <div class="image-container">
+                    <img src="images/projekty/ostrość.jpeg" alt="System regulacji ostrości w oparciu o sumaryczny rozkład gradientów" loading="lazy">
+                </div>
+                <div class="project-info">
+                    <h3>System regulacji ostrości w oparciu o sumaryczny rozkład gradientów</h3>
+                    <p class="project-desc">Zaprojektowanie i wdrożenie produkcyjnego algorytmu kalibracji ostrości. Faza badawcza, prototypowanie matematyczne, analiza sumarycznego rozkładu gradientów krawędzi jako miary ostrości sceny. Kod  zoptymalizowane pod kątem kalibracji wszystkich kamer produkcyjnych.</p>
+                    <div class="project-effect">
+                        <strong>Efekt:</strong> szybki i wydajny moduł kalibracji ostrości kamery
+                    </div>
+                    <div class="project-tech">
+                        <span class="tech-label">Technologia:</span>
+                        <div class="tags">
+                            <span>GNU Octave / MATLAB</span>
+                            <span>C++</span>
+                            <span>Gradient-based Focus Functions</span>
+                            <span>OpenCV</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROJEKT punkt optymalny -->
+            <div class="project-card">
+                <div class="image-container">
+                    <img src="images/projekty/punkt_optymalny.jpeg" alt="Optymalizacja kąta rotacji obiektu w systemach triangulacji 3D" loading="lazy">
+                </div>
+                <div class="project-info">
+                    <h3>Optymalizacja kąta rotacji obiektu w systemach triangulacji 3D</h3>
+                    <p class="project-desc">Zaprojektowanie i wdrożenie algorytmu analizy przestrzennej, służącego do wyznaczania optymalnego kąta obrotu elementu (w zakresie 0-180 stopni) względem osi kamery. System analizuje statystyki pikseli (wartości maksymalne, minimalne i średnie) w celu znalezienia punktów krytycznych gwarantujących maksymalną ekspozycję detali geometrycznych podczas skanowania triangulacyjnego.</p>
+                    <div class="project-effect">
+                        <strong>Efekt:</strong> automatyczne pozycjonowanie kątowe obiektów przed procesem inspekcji, minimalizujące zjawisko martwych stref (cieni optycznych) i zwiększające rekonstrukcji chmury punktów 3D
+                    </div>
+                    <div class="project-tech">
+                        <span class="tech-label">Technologia:</span>
+                        <div class="tags">
+                            <span>Python</span>
+                            <span>SciPy (Optymalizacja)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROJEKT triangulacja -->
+            <div class="project-card">
+                <div class="image-container">
+                    <img src="images/projekty/triangulacja.jpeg" alt="Rekonstrukcja 3D z pojedynczej kamery poprzez rotację robotyczną obiektu" loading="lazy">
+                </div>
+                <div class="project-info">
+                    <h3>Rekonstrukcja 3D z pojedynczej kamery poprzez rotację robotyczną obiektu</h3>
+                    <p class="project-desc">Zaprojektowanie i przeprowadzenie testów walidacyjnych algorytmu rekonstrukcji przestrzennej, przy użyciu pojedynczej kamery przemysłowej. Zamiast klasycznego układu stereowizyjnego, stanowisko wykorzystywało ramię robota do precyzyjnego obracania podzespołu elektronicznego przed obiektywem kamery, w celu uzyskania sekwencji obrazów pod różnymi kątami i odtworzenia geometrii metodą triangulacji.</p>
+                    <div class="project-effect">
+                        <strong>Efekt:</strong> przeprowadzenie analizy porównawczej dokładności rekonstrukcji w stosunku do systemów wielokamerowych. Potwierdzono możliwość odtworzenia geometrii 3D komponentów przy ograniczonej architekturze sprzętowej, co pozwola uprościć konstrukcję stanowiska i obniżyć koszty wdrożenia.
+                    </div>
+                    <div class="project-tech">
+                        <span class="tech-label">Technologia:</span>
+                        <div class="tags">
+                            <span>Python</span>
+                            <span>OpenCV</span>
+                            <span>Triangulacja jednoaparatowa (Single-Camera Triangulation)</span>
+                            <span>Przekształcenia widoków wielokrotnych (Multiple View Geometry)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="back-to-top"><a href="#home"><i class="bi bi-arrow-up-short"></i> Do góry</a></div>
+    </section>
+
+    <section id="oferta">
+        <h2>Co mogę zaoferować</h2>
+        <div class="offer-grid">
+            <div class="offer-card">
+                <i class="bi bi-eye"></i>
+                <h3>Inspekcja Jakości i Detekcja</h3>
+                <p>Projektowanie oraz implementacja algorytmów wizyjnych (klasycznych i Deep Learning) do automatycznej kontroli jakości na liniach produkcyjnych, wykrywania anomalii powierzchniowych, mikropęknięć oraz klasyfikacji komponentów elektronicznych (PCB).</p>
+            </div>
+            <div class="offer-card">
+                <i class="bi bi-cpu"></i>
+                <h3>Optymalizacja Akwizycji i Optyki</h3>
+                <p>Opracowywanie wydajnych modułów sterowania obrazem bezpośrednio w C++ i Pythonie. Wdrożenia systemów automatycznego ustawiania ostrości (Autofocus), dynamicznej kontroli ekspozycji (HDR, analiza histogramu RGB) oraz eliminacji zakłóceń oświetlenia zewnętrznego.</p>
+            </div>
+            <div class="offer-card">
+                <i class="bi bi-box-3d"></i>
+                <h3>Geometria i Rekonstrukcja 3D</h3>
+                <p>Tworzenie algorytmów przestrzennych analizujących pozycję i geometrię obiektów. Doświadczenie w triangulacji jednoaparatowej z wykorzystaniem rotacji robotycznej, estymacji pozy 3D (6DoF) oraz optymalizacji kąta widzenia kamer dla systemów klasy Bin Picking.</p>
+            </div>
+            <div class="offer-card">
+                <i class="bi bi-gear-wide-connected"></i>
+                <h3>Automatyzacja i Inżynieria Danych</h3>
+                <p>Budowa ekosystemów MLOps i platform adnotacji danych (CVAT) w architekturze on-premise z użyciem Dockera. Projektowanie autorskich skryptów autoadnotacji danych wizyjnych na podstawie plików inżynieryjnych CAD, skracających czas przygotowania zbiorów treningowych.</p>
+            </div>
+        </div>
+        <div class="back-to-top"><a href="#home"><i class="bi bi-arrow-up-short"></i> Do góry</a></div>
+    </section>
+
+    <section id="kontakt">
+        <h2>Kontakt</h2>
+        <div class="contact-container">
+            <p>Masz pytania dotyczące wdrożenia Computer Vision w Twoim projekcie? Napisz lub zadzwoń bezpośrednio do mnie.</p>
+            
+            <!-- PRZYCISKI E-MAIL -->
+            <div style="margin-bottom: 1rem;">
+                <button class="contact-btn" onclick="decodeAndAction(this, 'mail')">
+                    <i class="bi bi-envelope"></i> Wyślij e-mail
+                </button>
+                <button class="contact-btn" style="background-color: #334155; color: #fff;" onclick="decodeAndAction(this, 'show-mail')">
+                    <i class="bi bi-eye"></i> Pokaż e-mail
+                </button>
+            </div>
+
+            <!-- NOWOŚĆ: PRZYCISKI TELEFONU -->
+            <div>
+                <button class="contact-btn" style="background-color: #10b981; color: #fff;" onclick="decodeAndAction(this, 'phone')">
+                    <i class="bi bi-telephone"></i> Zadzwoń
+                </button>
+                <button class="contact-btn" style="background-color: #334155; color: #fff;" onclick="decodeAndAction(this, 'show-phone')">
+                    <i class="bi bi-eye"></i> Pokaż telefon
+                </button>
+            </div>
+            
+            <!-- Kontenery na dane tekstowe -->
+            <p id="email-display" style="margin-top: 1.5rem; font-weight: bold; color: var(--accent-color); font-size: 1.1rem; display: none;"></p>
+            <p id="phone-display" style="margin-top: 0.5rem; font-weight: bold; color: #10b981; font-size: 1.1rem; display: none;"></p>
+        </div>
+        <div class="back-to-top"><a href="#home"><i class="bi bi-arrow-up-short"></i> Do góry</a></div>
+    </section>
+
     <footer>
-        <p>&copy; 2026 Łukasz Pater | Specjalista analizy i przetwarzania obrazu</p>
+        <p>&copy; 2026 Łukasz Pater | Specjalista Computer Vision</p>
     </footer>
-    
+
+    <!-- MODAL DO PODGLĄDU PEŁNEGO EKRANU (ZAMKNIĘTY POPRAWNIE) -->
+    <div id="lightbox" class="lightbox-modal" onclick="closeLightbox()">
+        <span class="lightbox-close">&times;</span>
+        <img class="lightbox-content" id="lightbox-img" alt="Podgląd obrazu">
+    </div>
+
+<script>
+        function decodeAndAction(element, mode) {
+            // Dane w Base64 (podmień na własne)
+            const encodedEmail = "bWF0cml4Y29tcHV0ZXJ2aXNpb25AZ21haWwuY29t"; // kontakt@twojadomena.pl
+            const encodedPhone = "KzQ4NjkzNzMzMzg2"; // +48123456789
+            
+            if (mode === 'mail') {
+                window.location.href = "mailto:" + atob(encodedEmail);
+            } else if (mode === 'show-mail') {
+                const displayArea = document.getElementById('email-display');
+                displayArea.innerText = atob(encodedEmail);
+                displayArea.style.display = 'block';
+                element.innerHTML = '<i class="bi bi-check-lg"></i> Wyświetlono!';
+                element.disabled = true;
+                element.style.opacity = '0.7';
+            } 
+            else if (mode === 'phone') {
+                // Do dzwonienia przekazujemy czysty numer bez spacji
+                window.location.href = "tel:" + atob(encodedPhone);
+            } else if (mode === 'show-phone') {
+                const displayArea = document.getElementById('phone-display');
+                const rawPhone = atob(encodedPhone); // np. "+48123456789"
+                
+                // POPRAWKA: Automatyczne formatowanie numeru ze spacjami: +48 123 456 789
+                // Działa dla numerów z prefiksem (np. +48) oraz standardowych 9 cyfr
+                const formattedPhone = rawPhone.replace(/(\+\d{2})(\d{3})(\d{3})(\d{3})/, '$1 $2 $3 $4');
+                
+                displayArea.innerText = formattedPhone;
+                displayArea.style.display = 'block';
+                element.innerHTML = '<i class="bi bi-check-lg"></i> Wyświetlono!';
+                element.disabled = true;
+                element.style.opacity = '0.7';
+            }
+        }
+
+        // Lightbox dla obrazów
+        document.querySelectorAll('.image-container img').forEach(image => {
+            image.parentElement.addEventListener('click', () => {
+                const lightbox = document.getElementById('lightbox');
+                const lightboxImg = document.getElementById('lightbox-img');
+                lightboxImg.src = image.src;
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeLightbox();
+        });
+    </script>
 </body>
 </html>
